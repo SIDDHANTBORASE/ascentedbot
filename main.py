@@ -73,11 +73,11 @@ async def on_message(message):
         ping_channel = bot.get_channel(PING_CHANNEL_ID)
         if ping_channel:
             # Check if message contains dungeon spawn information
-            # Look for key indicators: "spawned" AND dungeon-related emojis
+            # Look for key indicators: either "spawned" OR dungeon-related emojis
             content_lower = message.content.lower()
             has_dungeon_indicators = (
-                "spawned" in content_lower and
-                ("🌍" in message.content or "🗺️" in message.content or "👹" in message.content)
+                "spawned" in content_lower or
+                ("🌍" in message.content and "🗺️" in message.content and "👹" in message.content)
             )
 
             if has_dungeon_indicators:
