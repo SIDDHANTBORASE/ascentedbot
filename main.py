@@ -24,6 +24,43 @@ async def on_ready():
     print(f'Connected to {len(bot.guilds)} guilds')
 
 
+def parse_dungeon_info(message_content):
+    """Parse dungeon information from YAML-style format"""
+    import re
+    
+    # Default values
+    dungeon_data = {
+        'island': 'Unknown',
+        'map': 'Unknown', 
+        'boss': 'Unknown',
+        'rank': 'E',
+        'red_dungeon': 'No',
+        'double_dungeon': 'No'
+    }
+    
+    # Extract information using regex patterns
+    patterns = {
+        'island': r'🌍\s*Island\s*:\s*(.+)',
+        'map': r'🗺️\s*Map\s*:\s*(.+)',
+        'boss': r'👹\s*Boss\s*:\s*(.+)',
+        'rank': r'🏅\s*Rank\s*:\s*(.+)',
+        'red_dungeon': r'🔥\s*Red Dungeon\s*:\s*(.+)',
+        'double_dungeon': r'⚔️\s*Double Dungeon\s*:\s*(.+)'
+    }
+    
+    for key, pattern in patterns.items():
+        match = re.search(pattern, message_content, re.IGNORECASE)
+        if match:
+            value = match.group(1).strip()
+            if key in ['red_dungeon', 'double_dungeon']:
+                # Convert emoji format to Yes/No
+                dungeon_data[key] = 'Yes' if '✅' in value or 'yes' in value.lower() else 'No'
+            else:
+                dungeon_data[key] = value
+    
+    return dungeon_data
+
+
 @bot.event
 async def on_message(message):
     # Ignore bot's own messages
@@ -33,23 +70,42 @@ async def on_message(message):
     if message.channel.id == GENERAL_CHANNEL_ID:
         ping_channel = bot.get_channel(PING_CHANNEL_ID)
         if ping_channel:
+            # Check if message contains dungeon spawn information
+            if "spawned" in message.content.lower() and "```yaml" in message.content:
+                # Parse the dungeon information
+                dungeon_info = parse_dungeon_info(message.content)
+            else:
+                # Use default values if no YAML format detected
+                dungeon_info = {
+                    'island': 'XZ',
+                    'map': 'Unknown',
+                    'boss': 'Paitama', 
+                    'rank': 'E',
+                    'red_dungeon': 'No',
+                    'double_dungeon': 'No'
+                }
+            
+            # Convert Yes/No to proper emoji format
+            red_status = "✅ Yes" if dungeon_info['red_dungeon'].lower() in ['yes', 'true', '1'] else "❌ No"
+            double_status = "✅ Yes" if dungeon_info['double_dungeon'].lower() in ['yes', 'true', '1'] else "❌ No"
+            
             # Create rich embed
             embed = discord.Embed(
-                title="🎯 NEW DUNGEON ALERT — RANK E 🌐",
+                title=f"🎯 NEW DUNGEON ALERT — RANK {dungeon_info['rank'].upper()} 🌐",
                 description="✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
                 color=0x5865F2
             )
             
             # Add dungeon stats
             stats_text = (
-                "🌍 **Island**: XZ\n"
-                "🏙️ **City**:\n"
-                "🗺️ **Map**:\n"
-                "👽 **Alienship**:\n"
-                "👹 **Boss**: Paitama\n"
-                "🔥 **Rank**: E\n"
-                "🔴 **Red Dungeon**: ❌ No\n"
-                "❌ **Double Dungeon**: ❌ No"
+                f"🌍 **Island**: {dungeon_info['island']}\n"
+                f"🏙️ **City**: Unknown\n"
+                f"🗺️ **Map**: {dungeon_info['map']}\n"
+                f"👽 **Alienship**: Unknown\n"
+                f"👹 **Boss**: {dungeon_info['boss']}\n"
+                f"🔥 **Rank**: {dungeon_info['rank'].upper()}\n"
+                f"🔴 **Red Dungeon**: {red_status}\n"
+                f"❌ **Double Dungeon**: {double_status}"
             )
             embed.add_field(name="📊 Dungeon Information", value=stats_text, inline=False)
             
