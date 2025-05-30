@@ -248,7 +248,7 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-@bot.command(name='help')
+@bot.command(name='commands')
 async def help_command(ctx):
     """Show help information"""
     try:
@@ -298,7 +298,7 @@ async def preferences_command(ctx, action=None, setting=None, *, value=None):
         if action == "view":
             prefs = user_preferences.get(user_id, {})
             if not prefs:
-                await ctx.send("You have no preferences set. Use `!help` to see available options.")
+                await ctx.send("You have no preferences set. Use `!commands` to see available options.")
                 return
                 
             embed = discord.Embed(title="Your Preferences", color=0x5865F2)
@@ -411,7 +411,7 @@ async def create_quick_alert(ctx, *, dungeon_info):
 
         parts = dungeon_info.split()
         if len(parts) < 2:
-            await ctx.send("❌ Please provide at least rank and island. Use `!help` for usage.")
+            await ctx.send("❌ Please provide at least rank and island. Use `!commands` for usage.")
             return
 
         dungeon_data = {
@@ -437,7 +437,7 @@ async def create_quick_alert(ctx, *, dungeon_info):
 async def on_command_error(ctx, error):
     """Global error handler"""
     if isinstance(error, commands.CommandNotFound):
-        await ctx.send("❌ Command not found. Use `!help` to see available commands.")
+        await ctx.send("❌ Command not found. Use `!commands` to see available commands.")
     elif isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(f"❌ Missing required argument: {error.param}")
     else:
