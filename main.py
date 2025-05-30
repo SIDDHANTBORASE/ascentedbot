@@ -95,13 +95,27 @@ async def on_message(message):
             double_status = "✅ Yes" if dungeon_info['double_dungeon'].lower(
             ) in ['yes', 'true', '1'] else "❌ No"
 
+            # Get color based on rank
+            def get_rank_color(rank):
+                rank = rank.upper()
+                colors = {
+                    'E': 0x808080,  # Gray
+                    'D': 0x8B4513,  # Brown
+                    'C': 0x00FF00,  # Green
+                    'B': 0x0000FF,  # Blue
+                    'A': 0x800080,  # Purple
+                    'S': 0xFF4500,  # Orange Red
+                    'SS': 0xFF0000  # Red
+                }
+                return colors.get(rank, 0x5865F2)  # Default discord blue
+
             # Create rich embed
             embed = discord.Embed(
                 title=
                 f"🎯 NEW DUNGEON ALERT — RANK {dungeon_info['rank'].upper()} 🌐",
                 description=
                 "✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
-                color=0x5865F2)
+                color=get_rank_color(dungeon_info['rank']))
 
             # Add dungeon stats
             stats_text = (f"🌍 **Island**: {dungeon_info['island']}\n"
@@ -159,11 +173,25 @@ async def create_dungeon_alert(ctx,
     double_status = "✅ Yes" if double_dungeon.lower() in ['yes', 'true', '1'
                                                           ] else "❌ No"
 
+    # Get color based on rank
+    def get_rank_color(rank):
+        rank = rank.upper()
+        colors = {
+            'E': 0x808080,  # Gray
+            'D': 0x8B4513,  # Brown
+            'C': 0x00FF00,  # Green
+            'B': 0x0000FF,  # Blue
+            'A': 0x800080,  # Purple
+            'S': 0xFF4500,  # Orange Red
+            'SS': 0xFF0000  # Red
+        }
+        return colors.get(rank, 0x5865F2)  # Default discord blue
+
     embed = discord.Embed(
         title=f"🎯 NEW DUNGEON ALERT — RANK {rank.upper()} 🌐",
         description=
         "✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
-        color=0x5865F2)
+        color=get_rank_color(rank))
 
     stats_text = (f"🌍 **Island**: {island}\n"
                   f"🏙️ **City**: {city}\n"
@@ -218,11 +246,25 @@ async def create_quick_alert(ctx, *, dungeon_info):
             'yes', 'true', '1'
         ] else "❌ No"
 
+        # Get color based on rank
+        def get_rank_color(rank):
+            rank = rank.upper()
+            colors = {
+                'E': 0x808080,  # Gray
+                'D': 0x8B4513,  # Brown
+                'C': 0x00FF00,  # Green
+                'B': 0x0000FF,  # Blue
+                'A': 0x800080,  # Purple
+                'S': 0xFF4500,  # Orange Red
+                'SS': 0xFF0000  # Red
+            }
+            return colors.get(rank, 0x5865F2)  # Default discord blue
+
         embed = discord.Embed(
             title=f"🎯 NEW DUNGEON ALERT — RANK {rank.upper()} 🌐",
             description=
             "✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
-            color=0x5865F2)
+            color=get_rank_color(rank))
 
         stats_text = (f"🌍 **Island**: {island}\n"
                       f"🏙️ **City**: {city}\n"
