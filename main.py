@@ -73,20 +73,20 @@ async def on_message(message):
         ping_channel = bot.get_channel(PING_CHANNEL_ID)
         if ping_channel:
             # Check if message contains dungeon spawn information
-            if "spawned" in message.content.lower(
-            ) and "```yaml" in message.content:
-                # Parse the dungeon information
+            # Look for key indicators: "spawned" AND dungeon-related emojis
+            content_lower = message.content.lower()
+            has_dungeon_indicators = (
+                "spawned" in content_lower and
+                ("🌍" in message.content or "🗺️" in message.content or "👹" in message.content)
+            )
+
+            if has_dungeon_indicators:
+                # Parse the dungeon information (works for both embedded and non-embedded YAML)
                 dungeon_info = parse_dungeon_info(message.content)
             else:
-                # Use default values if no YAML format detected
-                dungeon_info = {
-                    'island': 'XZ',
-                    'map': 'Unknown',
-                    'boss': 'Paitama',
-                    'rank': 'E',
-                    'red_dungeon': 'No',
-                    'double_dungeon': 'No'
-                }
+                # Skip this message - it's not a dungeon spawn
+                await bot.process_commands(message)
+                return
 
             # Convert Yes/No to proper emoji format
             red_status = "✅ Yes" if dungeon_info['red_dungeon'].lower() in [
@@ -239,7 +239,7 @@ async def create_quick_alert(ctx, *, dungeon_info):
         community_text = (
             "🙏 **Thanks for playing!**\n"
             "You're part of the Guild community! 🆙\n\n")
-        
+
         embed.add_field(name="🎮 Community", value=community_text, inline=False)
 
         current_time = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
