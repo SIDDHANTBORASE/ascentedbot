@@ -117,13 +117,8 @@ async def on_message(message):
                 "✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
                 color=get_rank_color(dungeon_info['rank']))
 
-            # Add dungeon stats
-            stats_text = (f"🌍 **Island**: {dungeon_info['island']}\n"
-                          f"🗺️ **Map**: {dungeon_info['map']}\n"
-                          f"👹 **Boss**: {dungeon_info['boss']}\n"
-                          f"🔥 **Rank**: {dungeon_info['rank'].upper()}\n"
-                          f"🔴 **Red Dungeon**: {red_status}\n"
-                          f"❌ **Double Dungeon**: {double_status}")
+            # Add dungeon stats in YAML format
+            stats_text = f"```yaml\n🌍 Island        : {dungeon_info['island']}\n🗺️ Map           : {dungeon_info['map']}\n👹 Boss          : {dungeon_info['boss']}\n🏅 Rank          : {dungeon_info['rank'].upper()}\n🔥 Red Dungeon   : {red_status}\n⚔️ Double Dungeon: {double_status}\n```"
             embed.add_field(name="📊 Dungeon Information",
                             value=stats_text,
                             inline=False)
@@ -193,14 +188,7 @@ async def create_dungeon_alert(ctx,
         "✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
         color=get_rank_color(rank))
 
-    stats_text = (f"🌍 **Island**: {island}\n"
-                  f"🏙️ **City**: {city}\n"
-                  f"🗺️ **Map**: {map_name}\n"
-                  f"👽 **Alienship**: {alienship}\n"
-                  f"👹 **Boss**: {boss}\n"
-                  f"🔥 **Rank**: {rank.upper()}\n"
-                  f"🔴 **Red Dungeon**: {red_status}\n"
-                  f"❌ **Double Dungeon**: {double_status}")
+    stats_text = f"```yaml\n🌍 Island        : {island}\n🏙️ City          : {city}\n🗺️ Map           : {map_name}\n👽 Alienship     : {alienship}\n👹 Boss          : {boss}\n🏅 Rank          : {rank.upper()}\n🔥 Red Dungeon   : {red_status}\n⚔️ Double Dungeon: {double_status}\n```"
     embed.add_field(name="📊 Dungeon Information",
                     value=stats_text,
                     inline=False)
@@ -266,14 +254,7 @@ async def create_quick_alert(ctx, *, dungeon_info):
             "✨ A new dungeon has just spawned!\nPrepare your team and dive into battle!",
             color=get_rank_color(rank))
 
-        stats_text = (f"🌍 **Island**: {island}\n"
-                      f"🏙️ **City**: {city}\n"
-                      f"🗺️ **Map**: {map_name}\n"
-                      f"👽 **Alienship**: {alienship}\n"
-                      f"👹 **Boss**: {boss}\n"
-                      f"🔥 **Rank**: {rank.upper()}\n"
-                      f"🔴 **Red Dungeon**: {red_status}\n"
-                      f"⚔️ **Double Dungeon**: {double_status}")
+        stats_text = f"```yaml\n🌍 Island        : {island}\n🏙️ City          : {city}\n🗺️ Map           : {map_name}\n👽 Alienship     : {alienship}\n👹 Boss          : {boss}\n🏅 Rank          : {rank.upper()}\n🔥 Red Dungeon   : {red_status}\n⚔️ Double Dungeon: {double_status}\n```"
         embed.add_field(name="📊 Dungeon Information",
                         value=stats_text,
                         inline=False)
