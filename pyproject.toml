@@ -5,3 +5,7 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 requires-python = ">=3.11"
 dependencies = []
+[tool.poetry.dependencies]
+python = "^3.10"
+discord.py = "^2.3.2"
+python-dotenv = "^1.0.1"
