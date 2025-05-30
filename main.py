@@ -259,12 +259,6 @@ async def help_command(ctx):
         )
         
         commands_text = """
-        `!dungeon <rank> <island> <city> <map> <alienship> <boss> <red> <double>`
-        Create a custom dungeon alert
-        
-        `!alert <rank> <island> <city> <map> <alienship> <boss> <red> <double>`
-        Quick dungeon alert with space-separated values
-        
         `!preferences set rank_filter <ranks>`
         Set which ranks you want to be notified about (e.g., S,SS)
         
@@ -374,64 +368,7 @@ async def history_command(ctx, count: int = 5):
         logger.error(f"Error in history command: {e}")
         await ctx.send("❌ Error retrieving history.")
 
-@bot.command(name='dungeon')
-async def create_dungeon_alert(ctx, rank="E", island="XZ", city="", map_name="", alienship="", boss="Paitama", red_dungeon="No", double_dungeon="No"):
-    """Create a custom dungeon alert"""
-    try:
-        if not check_rate_limit(ctx.author.id):
-            await ctx.send("⏰ Please wait before creating another alert.")
-            return
 
-        dungeon_info = {
-            'island': island,
-            'map': map_name,
-            'boss': boss,
-            'rank': rank,
-            'red_dungeon': red_dungeon,
-            'double_dungeon': double_dungeon
-        }
-
-        embed = await create_dungeon_embed(dungeon_info)
-        if embed:
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send("❌ Error creating dungeon alert.")
-            
-    except Exception as e:
-        logger.error(f"Error in dungeon command: {e}")
-        await ctx.send("❌ Error creating dungeon alert.")
-
-@bot.command(name='alert')
-async def create_quick_alert(ctx, *, dungeon_info):
-    """Create a dungeon alert with space-separated values"""
-    try:
-        if not check_rate_limit(ctx.author.id):
-            await ctx.send("⏰ Please wait before creating another alert.")
-            return
-
-        parts = dungeon_info.split()
-        if len(parts) < 2:
-            await ctx.send("❌ Please provide at least rank and island. Use `!commands` for usage.")
-            return
-
-        dungeon_data = {
-            'rank': parts[0] if len(parts) > 0 else "E",
-            'island': parts[1] if len(parts) > 1 else "XZ",
-            'map': parts[3] if len(parts) > 3 else "",
-            'boss': parts[5] if len(parts) > 5 else "Paitama",
-            'red_dungeon': parts[6] if len(parts) > 6 else "No",
-            'double_dungeon': parts[7] if len(parts) > 7 else "No"
-        }
-
-        embed = await create_dungeon_embed(dungeon_data)
-        if embed:
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send("❌ Error creating dungeon alert.")
-
-    except Exception as e:
-        logger.error(f"Error in alert command: {e}")
-        await ctx.send("❌ Error creating alert. Please use format: `!alert <rank> <island> ...`")
 
 @bot.event
 async def on_command_error(ctx, error):
