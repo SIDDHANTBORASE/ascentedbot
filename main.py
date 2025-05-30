@@ -121,9 +121,9 @@ async def on_message(message):
                             value=community_text,
                             inline=False)
 
-            # Add timestamp
-            current_time = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-            embed.add_field(name="🕒 Time", value=current_time, inline=False)
+            # Add timestamp (use the original message timestamp)
+            message_time = message.created_at.strftime("%d/%m/%Y, %H:%M:%S")
+            embed.add_field(name="🕒 Time", value=message_time, inline=False)
 
             # Set footer
             embed.set_footer(
