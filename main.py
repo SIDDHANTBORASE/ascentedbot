@@ -50,7 +50,7 @@ CONFIG = {
     # ===== TICKET CONFIG =====
     'ticket': {
         'category_id':
-        1379699902531113080,  # Replace with your ticket category ID
+        1366005332492550195,  # Replace with your ticket category ID
         'log_channel_id':
         1378594826672541764,  # Replace with your log channel ID (optional)
         'staff_role_id': 1366005331809013943  # Replace with your staff role ID
