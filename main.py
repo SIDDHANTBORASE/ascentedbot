@@ -1,6 +1,7 @@
 import os
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 from datetime import datetime
 import json
 import asyncio
@@ -16,7 +17,7 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
+load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 GENERAL_CHANNEL_ID = int(os.getenv("GENERAL_CHANNEL_ID"))
@@ -452,7 +453,7 @@ async def ticket_pannel(ctx):
     embed = discord.Embed(
         title="Guild Joining Ticket",
         description=
-        "# If you're facing any issues or need assistance, please click the **button attached** to this message to open a support ticket. Our team will get back to you as soon as possible to help resolve your query. For faster assistance, kindly provide clear details or screenshots if applicable. Thank you for being a part of our community!",
+        "If you're facing any issues or need assistance, please click the **button attached** to this message to open a support ticket. Our team will get back to you as soon as possible to help resolve your query. For faster assistance, kindly provide clear details or screenshots if applicable. Thank you for being a part of our community!",
         color=0x2ECC71)
     await ctx.send(embed=embed, view=view)
 
