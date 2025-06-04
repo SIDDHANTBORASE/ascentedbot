@@ -7,7 +7,7 @@ import asyncio
 import logging
 import re
 
-from keep_alice import keep_alive
+from keep_alive import keep_alive
 from discord.ui import View, Button
 
 keep_alive()
