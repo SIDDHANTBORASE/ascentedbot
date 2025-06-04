@@ -16,8 +16,6 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
-
 TOKEN = os.getenv("BOT_TOKEN")
 GENERAL_CHANNEL_ID = int(os.getenv("GENERAL_CHANNEL_ID"))
 PING_CHANNEL_ID = int(os.getenv("PING_CHANNEL_ID"))
@@ -50,10 +48,10 @@ CONFIG = {
     # ===== TICKET CONFIG =====
     'ticket': {
         'category_id':
-        1366005332492550195,  # Replace with your ticket category ID
+        1379699902531113080,  # Replace with your ticket category ID
         'log_channel_id':
         1378594826672541764,  # Replace with your log channel ID (optional)
-        'staff_role_id': 1366005331809013943  # Replace with your staff role ID
+        'staff_role_id': 1379700022773420032  # Replace with your staff role ID
     }
 }
 
@@ -359,8 +357,14 @@ async def ticket_p_guild(ctx):
     embed = discord.Embed(
         title="Guild Joining Ticket",
         description=
-        "# Open Ticket For Joining the Guild:\n Please make sure to carefully read the guidelines in <#1366005332270387280>.\n Ensure you meet all the requirements listed before opening a ticket.\n To open a ticket, simply click the **button attached** to this message.\n Our team will assist you as soon as possible.\n Thank you for your interest in joining our community!",
+        "# Open Ticket For Joining the Guild:\n Please make sure to carefully read the guidelines in <#1378594826672541764>.\n Ensure you meet all the requirements listed before opening a ticket.\n To open a ticket, simply click the **button attached** to this message.\n Our team will assist you as soon as possible.\n Thank you for your interest in joining our community!",
         color=0x2ECC71)
+    embed.set_footer(text="Ascended Sword")
+    embed.set_thumbnail(
+        url=
+        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+    )
+
     await ctx.send(embed=embed, view=view)
 
 
@@ -413,6 +417,11 @@ async def on_interaction(interaction: discord.Interaction):
                 description=
                 f"{interaction.user.mention}, For verification purposes, please send us screenshots of the following:\n• Gamepasses :PandaRich:\n• DPS :PadaFight:\n• Gems :gems:\n• Rank :Nrank:\nMake sure the screenshots clearly show your username and the relevant details.\nThis will help us verify your eligibility quickly and accurately.",
                 color=0x3498DB)
+            embed.set_footer(text="Ascended Sword")
+            embed.set_thumbnail(
+                url=
+                "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+            )
             await channel.send(content=interaction.user.mention,
                                embed=embed,
                                view=close_view)
@@ -454,6 +463,11 @@ async def ticket_pannel(ctx):
         description=
         "If you're facing any issues or need assistance, please click the **button attached** to this message to open a support ticket. Our team will get back to you as soon as possible to help resolve your query. For faster assistance, kindly provide clear details or screenshots if applicable. Thank you for being a part of our community!",
         color=0x2ECC71)
+    embed.set_footer(text="Ascended Sword")
+    embed.set_thumbnail(
+        url=
+        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+    )
     await ctx.send(embed=embed, view=view)
 
 
@@ -506,6 +520,11 @@ async def on_interaction(interaction: discord.Interaction):
                 description=
                 f"{interaction.user.mention}, Wait our staff will catch your request soon",
                 color=0x3498DB)
+            embed.set_footer(text="Ascended Sword")
+            embed.set_thumbnail(
+                url=
+                "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+            )
             await channel.send(content=interaction.user.mention,
                                embed=embed,
                                view=close_view)
