@@ -357,7 +357,7 @@ async def ticket_p_guild(ctx):
     embed = discord.Embed(
         title="Guild Joining Ticket",
         description=
-        "# Open Ticket For Joining the Guild:\n Please make sure to carefully read the guidelines in <#1378594826672541764>.\n Ensure you meet all the requirements listed before opening a ticket.\n To open a ticket, simply click the **button attached** to this message.\n Our team will assist you as soon as possible.\n Thank you for your interest in joining our community!",
+        "# Open Ticket For Joining the Guild:\n Please make sure to carefully read the guidelines in <#1366005332270387280>.\n Ensure you meet all the requirements listed before opening a ticket.\n To open a ticket, simply click the **button attached** to this message.\n Our team will assist you as soon as possible.\n Thank you for your interest in joining our community!",
         color=0x2ECC71)
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
