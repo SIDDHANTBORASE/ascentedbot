@@ -345,243 +345,83 @@ async def help_command(ctx):
 @bot.command(name="ticketpguild")
 @commands.has_permissions(administrator=True)
 async def ticket_p_guild(ctx):
-    """Send the ticket panel with button"""
     view = View()
-    view.add_item(
-        Button(label="🎟 Apply for Guild",
-               style=discord.ButtonStyle.green,
-               custom_id="open_ticket_guild"))
+    view.add_item(Button(label="🎟 Apply for Guild", style=discord.ButtonStyle.green, custom_id="open_ticket_guild"))
 
     embed = discord.Embed(
         title="Guild Joining Ticket",
-        description=
-        "# Open Ticket For Joining the Guild:\n Please make sure to carefully read the guidelines in <#1366005332270387280>.\n Ensure you meet all the requirements listed before opening a ticket.\n To open a ticket, simply click the **button attached** to this message.\n Our team will assist you as soon as possible.\n Thank you for your interest in joining our community!",
-        color=0x2ECC71)
+        description=(
+            "# Open Ticket For Joining the Guild:\n"
+            "Please make sure to carefully read the guidelines in <#1366005332270387280>.\n"
+            "Ensure you meet all the requirements listed before opening a ticket.\n"
+            "To open a ticket, simply click the **button attached** to this message.\n"
+            "Our team will assist you as soon as possible.\n"
+            "Thank you for your interest in joining our community!"
+        ),
+        color=0x2ECC71
+    )
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+        url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
     )
-
     await ctx.send(embed=embed, view=view)
-
-
-@bot.event
-async def on_interaction(interaction: discord.Interaction):
-    # Handle button interactions for tickets
-    if interaction.type == discord.InteractionType.component:
-        if interaction.data['custom_id'] == "open_ticket_guild":
-            guild = interaction.guild
-            category = discord.utils.get(guild.categories,
-                                         id=CONFIG['ticket']['category_id'])
-            staff_role = guild.get_role(CONFIG['ticket']['staff_role_id'])
-
-            # Check if ticket already exists
-            existing = discord.utils.get(
-                guild.text_channels,
-                name=f"ticket-{interaction.user.name.lower()}")
-            if existing:
-                await interaction.response.send_message(
-                    f"❌ You already have an open ticket: {existing.mention}",
-                    ephemeral=True)
-                return
-
-            # Permissions for the ticket channel
-            overwrites = {
-                guild.default_role:
-                discord.PermissionOverwrite(read_messages=False),
-                interaction.user:
-                discord.PermissionOverwrite(read_messages=True,
-                                            send_messages=True),
-                staff_role:
-                discord.PermissionOverwrite(read_messages=True,
-                                            send_messages=True)
-            }
-
-            channel = await guild.create_text_channel(
-                name=f"ticket-{interaction.user.name.lower()}",
-                category=category,
-                overwrites=overwrites,
-                reason=f"Ticket opened by {interaction.user.name}")
-
-            close_view = View()
-            close_view.add_item(
-                Button(label="🔒 Close Ticket",
-                       style=discord.ButtonStyle.red,
-                       custom_id="close_ticket"))
-
-            embed = discord.Embed(
-                title="🎫 Ticket Opened",
-                description=
-                f"{interaction.user.mention}, For verification purposes, please send us screenshots of the following:\n• Gamepasses :PandaRich:\n• DPS :PadaFight:\n• Gems :gems:\n• Rank :Nrank:\nMake sure the screenshots clearly show your username and the relevant details.\nThis will help us verify your eligibility quickly and accurately.",
-                color=0x3498DB)
-            embed.set_footer(text="Ascended Sword")
-            embed.set_thumbnail(
-                url=
-                "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
-            )
-            await channel.send(content=interaction.user.mention,
-                               embed=embed,
-                               view=close_view)
-            await interaction.response.send_message(
-                f"✅ Ticket created: {channel.mention}", ephemeral=True)
-
-            log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
-            if log_channel:
-                await log_channel.send(
-                    f"📩 Ticket opened by {interaction.user.mention} → {channel.mention}"
-                )
-
-        elif interaction.data['custom_id'] == "close_ticket":
-            await interaction.response.send_message(
-                "🛑 Ticket will be closed in 5 seconds...", ephemeral=True)
-            await asyncio.sleep(5)
-
-            log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
-            if log_channel:
-                await log_channel.send(
-                    f"🔒 Ticket closed: {interaction.channel.name} by {interaction.user.mention}"
-                )
-
-            await interaction.channel.delete()
 
 
 @bot.command(name="ticketpannel")
 @commands.has_permissions(administrator=True)
 async def ticket_pannel(ctx):
-    """Send the ticket panel with button"""
     view = View()
-    view.add_item(
-        Button(label="🎟 Open Ticket",
-               style=discord.ButtonStyle.green,
-               custom_id="open_ticket_support"))
+    view.add_item(Button(label="🎟 Open Ticket", style=discord.ButtonStyle.green, custom_id="open_ticket_support"))
 
     embed = discord.Embed(
         title="Support Section",
-        description=
-        "If you're facing any issues or need assistance, please click the **button attached** to this message to open a support ticket. Our team will get back to you as soon as possible to help resolve your query. For faster assistance, kindly provide clear details or screenshots if applicable. Thank you for being a part of our community!",
-        color=0x2ECC71)
+        description=(
+            "If you're facing any issues or need assistance, please click the **button attached** to this message "
+            "to open a support ticket. Our team will get back to you as soon as possible to help resolve your query.\n"
+            "For faster assistance, kindly provide clear details or screenshots if applicable.\n"
+            "Thank you for being a part of our community!"
+        ),
+        color=0x2ECC71
+    )
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+        url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
     )
     await ctx.send(embed=embed, view=view)
 
-
-@bot.event
-async def on_interaction(interaction: discord.Interaction):
-    # Handle button interactions for tickets
-    if interaction.type == discord.InteractionType.component:
-        if interaction.data['custom_id'] == "open_ticket_support":
-            guild = interaction.guild
-            category = discord.utils.get(guild.categories,
-                                         id=CONFIG['ticket']['category_id'])
-            staff_role = guild.get_role(CONFIG['ticket']['staff_role_id'])
-
-            # Check if ticket already exists
-            existing = discord.utils.get(
-                guild.text_channels,
-                name=f"ticket-{interaction.user.name.lower()}")
-            if existing:
-                await interaction.response.send_message(
-                    f"❌ You already have an open ticket: {existing.mention}",
-                    ephemeral=True)
-                return
-
-            # Permissions for the ticket channel
-            overwrites = {
-                guild.default_role:
-                discord.PermissionOverwrite(read_messages=False),
-                interaction.user:
-                discord.PermissionOverwrite(read_messages=True,
-                                            send_messages=True),
-                staff_role:
-                discord.PermissionOverwrite(read_messages=True,
-                                            send_messages=True)
-            }
-
-            channel = await guild.create_text_channel(
-                name=f"ticket-{interaction.user.name.lower()}",
-                category=category,
-                overwrites=overwrites,
-                reason=f"Ticket opened by {interaction.user.name}")
-
-            close_view = View()
-            close_view.add_item(
-                Button(label="🔒 Close Ticket",
-                       style=discord.ButtonStyle.red,
-                       custom_id="close_ticket"))
-
-            embed = discord.Embed(
-                title="🎫 Ticket Opened",
-                description=
-                f"{interaction.user.mention}, Wait our staff will catch your request soon",
-                color=0x3498DB)
-            embed.set_footer(text="Ascended Sword")
-            embed.set_thumbnail(
-                url=
-                "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
-            )
-            await channel.send(content=interaction.user.mention,
-                               embed=embed,
-                               view=close_view)
-            await interaction.response.send_message(
-                f"✅ Ticket created: {channel.mention}", ephemeral=True)
-
-            log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
-            if log_channel:
-                await log_channel.send(
-                    f"📩 Ticket opened by {interaction.user.mention} → {channel.mention}"
-                )
-
-        elif interaction.data['custom_id'] == "close_ticket":
-            await interaction.response.send_message(
-                "🛑 Ticket will be closed in 5 seconds...", ephemeral=True)
-            await asyncio.sleep(5)
-
-            log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
-            if log_channel:
-                await log_channel.send(
-                    f"🔒 Ticket closed: {interaction.channel.name} by {interaction.user.mention}"
-                )
-
-            await interaction.channel.delete()
 
 @bot.command(name="ttpannel")
 @commands.has_permissions(administrator=True)
 async def t_t_pannel(ctx):
-    """Send the ticket panel with button"""
     view = View()
-    view.add_item(
-        Button(label="🎟 Appoint Your Theorpy Now",
-               style=discord.ButtonStyle.green,
-               custom_id="open_ticket_theoro"))
+    view.add_item(Button(label="🎟 Appoint Your Therapy Now", style=discord.ButtonStyle.green, custom_id="open_ticket_theoro"))
 
     embed = discord.Embed(
-        title="Theorpy Section",
-        description=
-        "If you having any problem with mental, or something similar like that, please click the button attached to this message to open a support ticket, <@&1371118384179318795> will help you to solve your problem as soon as possible, and please dont leave your ticket empty. thank you for being a part of our community!",
-        color=0x2ECC71)
+        title="Therapy Section",
+        description=(
+            "If you are having any mental health issues or something similar, please click the button attached to "
+            "this message to open a support ticket. <@&1371118384179318795> will help you solve your problem as soon "
+            "as possible. Please don’t leave your ticket empty. Thank you for being a part of our community!"
+        ),
+        color=0x2ECC71
+    )
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+        url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
     )
-
     await ctx.send(embed=embed, view=view)
 
 
 @bot.event
 async def on_interaction(interaction: discord.Interaction):
-    # Handle button interactions for tickets
     if interaction.type == discord.InteractionType.component:
-        if interaction.data['custom_id'] == "open_ticket_theoro":
-            guild = interaction.guild
-            category = discord.utils.get(guild.categories,
-                                         id=CONFIG['ticket']['category_id'])
-            staff_role = guild.get_role(CONFIG['ticket']['staff_role_id'])
+        custom_id = interaction.data['custom_id']
+        guild = interaction.guild
+        category = discord.utils.get(guild.categories, id=CONFIG['ticket']['category_id'])
+        staff_role = guild.get_role(CONFIG['ticket']['staff_role_id'])
+        log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
 
+        if custom_id in ["open_ticket_guild", "open_ticket_support", "open_ticket_theoro"]:
             # Check if ticket already exists
             existing = discord.utils.get(
                 guild.text_channels,
@@ -592,63 +432,53 @@ async def on_interaction(interaction: discord.Interaction):
                     ephemeral=True)
                 return
 
-            # Permissions for the ticket channel
+            # Channel permissions
             overwrites = {
-                guild.default_role:
-                discord.PermissionOverwrite(read_messages=False),
-                interaction.user:
-                discord.PermissionOverwrite(read_messages=True,
-                                            send_messages=True),
-                staff_role:
-                discord.PermissionOverwrite(read_messages=True,
-                                            send_messages=True)
+                guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                interaction.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+                staff_role: discord.PermissionOverwrite(read_messages=True, send_messages=True)
             }
 
             channel = await guild.create_text_channel(
                 name=f"ticket-{interaction.user.name.lower()}",
                 category=category,
                 overwrites=overwrites,
-                reason=f"Ticket opened by {interaction.user.name}")
+                reason=f"Ticket opened by {interaction.user.name}"
+            )
 
-            close_view = View()
-            close_view.add_item(
-                Button(label="🔒 Close Ticket",
-                       style=discord.ButtonStyle.red,
-                       custom_id="close_ticket"))
+            # Embed content based on type
+            if custom_id == "open_ticket_guild":
+                description = (
+                    f"{interaction.user.mention}, For verification purposes, please send us screenshots of the following:\n"
+                    f"• Gamepasses :PandaRich:\n• DPS :PadaFight:\n• Gems :gems:\n• Rank :Nrank:\n"
+                    "Make sure the screenshots clearly show your username and the relevant details.\n"
+                    "This will help us verify your eligibility quickly and accurately."
+                )
+            elif custom_id == "open_ticket_support":
+                description = f"{interaction.user.mention}, wait for our staff to reach you soon."
+            elif custom_id == "open_ticket_theoro":
+                description = f"{interaction.user.mention}, our Therapist will reach out to you shortly."
 
-            embed = discord.Embed(
-                title="🎫 Ticket Opened",
-                description=
-                f"{interaction.user.mention}, wait our Theorpist will reach you sool.",
-                color=0x3498DB)
+            embed = discord.Embed(title="🎫 Ticket Opened", description=description, color=0x3498DB)
             embed.set_footer(text="Ascended Sword")
             embed.set_thumbnail(
-                url=
-                "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png?ex=68412be7&is=683fda67&hm=1d6b86035c182f79afb7515eef5a6ce5b19e418be52281eead63471687cb5825&=&format=webp&quality=lossless"
+                url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
             )
-            await channel.send(content=interaction.user.mention,
-                               embed=embed,
-                               view=close_view)
-            await interaction.response.send_message(
-                f"✅ Ticket created: {channel.mention}", ephemeral=True)
 
-            log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
+            close_view = View()
+            close_view.add_item(Button(label="🔒 Close Ticket", style=discord.ButtonStyle.red, custom_id="close_ticket"))
+
+            await channel.send(content=interaction.user.mention, embed=embed, view=close_view)
+            await interaction.response.send_message(f"✅ Ticket created: {channel.mention}", ephemeral=True)
+
             if log_channel:
-                await log_channel.send(
-                    f"📩 Ticket opened by {interaction.user.mention} → {channel.mention}"
-                )
+                await log_channel.send(f"📩 Ticket opened by {interaction.user.mention} → {channel.mention}")
 
-        elif interaction.data['custom_id'] == "close_ticket":
-            await interaction.response.send_message(
-                "🛑 Ticket will be closed in 5 seconds...", ephemeral=True)
+        elif custom_id == "close_ticket":
+            await interaction.response.send_message("🛑 Ticket will be closed in 5 seconds...", ephemeral=True)
             await asyncio.sleep(5)
-
-            log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
             if log_channel:
-                await log_channel.send(
-                    f"🔒 Ticket closed: {interaction.channel.name} by {interaction.user.mention}"
-                )
-
+                await log_channel.send(f"🔒 Ticket closed: {interaction.channel.name} by {interaction.user.mention}")
             await interaction.channel.delete()
 
 
