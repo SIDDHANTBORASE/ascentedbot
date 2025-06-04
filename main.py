@@ -350,7 +350,7 @@ async def ticket_p_guild(ctx):
     view.add_item(
         Button(label="🎟 Apply for Guild",
                style=discord.ButtonStyle.green,
-               custom_id="open_ticket"))
+               custom_id="open_ticket_guild"))
 
     embed = discord.Embed(
         title="Guild Joining Ticket",
@@ -370,7 +370,7 @@ async def ticket_p_guild(ctx):
 async def on_interaction(interaction: discord.Interaction):
     # Handle button interactions for tickets
     if interaction.type == discord.InteractionType.component:
-        if interaction.data['custom_id'] == "open_ticket":
+        if interaction.data['custom_id'] == "open_ticket_guild":
             guild = interaction.guild
             category = discord.utils.get(guild.categories,
                                          id=CONFIG['ticket']['category_id'])
@@ -454,7 +454,7 @@ async def ticket_pannel(ctx):
     view.add_item(
         Button(label="🎟 Open Ticket",
                style=discord.ButtonStyle.green,
-               custom_id="open_ticket"))
+               custom_id="open_ticket_support"))
 
     embed = discord.Embed(
         title="Support Section",
@@ -473,7 +473,7 @@ async def ticket_pannel(ctx):
 async def on_interaction(interaction: discord.Interaction):
     # Handle button interactions for tickets
     if interaction.type == discord.InteractionType.component:
-        if interaction.data['custom_id'] == "open_ticket":
+        if interaction.data['custom_id'] == "open_ticket_support":
             guild = interaction.guild
             category = discord.utils.get(guild.categories,
                                          id=CONFIG['ticket']['category_id'])
@@ -556,7 +556,7 @@ async def t_t_pannel(ctx):
     view.add_item(
         Button(label="🎟 Appoint Your Theorpy Now",
                style=discord.ButtonStyle.green,
-               custom_id="open_ticket"))
+               custom_id="open_ticket_theoro"))
 
     embed = discord.Embed(
         title="Theorpy Section",
@@ -576,7 +576,7 @@ async def t_t_pannel(ctx):
 async def on_interaction(interaction: discord.Interaction):
     # Handle button interactions for tickets
     if interaction.type == discord.InteractionType.component:
-        if interaction.data['custom_id'] == "open_ticket":
+        if interaction.data['custom_id'] == "open_ticket_theoro":
             guild = interaction.guild
             category = discord.utils.get(guild.categories,
                                          id=CONFIG['ticket']['category_id'])
