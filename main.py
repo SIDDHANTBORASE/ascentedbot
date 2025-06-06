@@ -449,8 +449,8 @@ async def on_interaction(interaction: discord.Interaction):
             # Embed content based on type
             if custom_id == "open_ticket_guild":
                 description = (
-                    f"{interaction.user.mention}, For verification purposes, please send us screenshots of the following:\n"
-                    f"• Gamepasses :PandaRich:\n• DPS :PadaFight:\n• Gems :gems:\n• Rank :Nrank:\n"
+                    f"{interaction.user.mention}, \nFor verification purposes, please send us screenshots of the following:\n"
+                    f"• Gamepasses \n• DPS        :\n• Gems       :\n• Rank       :\n"
                     "Make sure the screenshots clearly show your username and the relevant details.\n"
                     "This will help us verify your eligibility quickly and accurately."
                 )
@@ -471,8 +471,10 @@ async def on_interaction(interaction: discord.Interaction):
             await channel.send(content=f"{interaction.user.mention} " , embed=embed)
             if custom_id == "open_ticket_theoro":
                await channel.send(content=f"<@&1371118384179318795>",view = close_view)
+            elif custome_id == "open_ticket_guild" :
+                await channel.send(content =f"<@&1379102430746378240> <@&1379102625714147438>",view = close_view)
             else :
-                await channel.send(content =f"<@&1379102430746378240>",view = close_view)
+                await channel.send(content =f"<@&1379102430746378240> ",view = close_view)
             await interaction.response.send_message(f"✅ Ticket created: {channel.mention}", ephemeral=True)
 
             if log_channel:
