@@ -471,9 +471,9 @@ async def on_interaction(interaction: discord.Interaction):
             await channel.send(content=f"{interaction.user.mention} " , embed=embed)
             if custom_id == "open_ticket_theoro":
                await channel.send(content=f"<@&1371118384179318795>",view = close_view)
-            elif custome_id == "open_ticket_guild" :
+            elif custom_id == "open_ticket_guild":
                 await channel.send(content =f"<@&1379102430746378240> <@&1379102625714147438>",view = close_view)
-            else :
+            else:
                 await channel.send(content =f"<@&1379102430746378240> ",view = close_view)
             await interaction.response.send_message(f"✅ Ticket created: {channel.mention}", ephemeral=True)
 
