@@ -468,8 +468,11 @@ async def on_interaction(interaction: discord.Interaction):
             close_view = View()
             close_view.add_item(Button(label="🔒 Close Ticket", style=discord.ButtonStyle.red, custom_id="close_ticket"))
 
-            await channel.send(content=f"{interaction.user.mention} " , embed=embed, view=close_view)
-            await channel.send(content=" <@&1379102430746378240>", view = close_view)
+            await channel.send(content=f"{interaction.user.mention} " , embed=embed)
+            if custom_id == "open_ticket_theoro":
+               await channel.send(content=f"<@&1371118384179318795>",view = close_view)
+            else :
+                await channel.send(content =f"<@&1379102430746378240>",view = close_view)
             await interaction.response.send_message(f"✅ Ticket created: {channel.mention}", ephemeral=True)
 
             if log_channel:
