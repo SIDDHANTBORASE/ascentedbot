@@ -468,7 +468,7 @@ async def on_interaction(interaction: discord.Interaction):
             close_view = View()
             close_view.add_item(Button(label="🔒 Close Ticket", style=discord.ButtonStyle.red, custom_id="close_ticket"))
 
-            await channel.send(content=f"{interaction.user.mention} {<@&1379102430746378240>}" , embed=embed, view=close_view)
+            await channel.send(content=f"{interaction.user.mention} <@&1379102430746378240>" , embed=embed, view=close_view)
             await interaction.response.send_message(f"✅ Ticket created: {channel.mention}", ephemeral=True)
 
             if log_channel:
