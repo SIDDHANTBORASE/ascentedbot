@@ -26,7 +26,7 @@ intents.messages = True
 intents.guilds = True  # needed for categories and roles
 
 bot = commands.Bot(command_prefix='/', intents=intents)
-bot.load_extension("automod")
+await bot.load_extension("automod")
 # Configuration
 CONFIG = {
     'colors': {
