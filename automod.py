@@ -19,9 +19,7 @@ class AutoMod(commands.Cog):
             try:
                 await message.delete()
 
-                # ❗ No 'await' here!
                 log_channel = self.bot.get_channel(self.LOG_CHANNEL_ID)
-
                 if log_channel:
                     embed = discord.Embed(
                         title="🚨 Bad Word Detected",
@@ -39,9 +37,6 @@ class AutoMod(commands.Cog):
                 print("⚠️ Missing permission to delete or send log.")
             except discord.HTTPException as e:
                 print(f"❌ Error deleting or logging: {e}")
-
-        # Important: allows other commands to work
-        await self.bot.process_commands(message)
 
 def setup(bot):
     bot.add_cog(AutoMod(bot))
