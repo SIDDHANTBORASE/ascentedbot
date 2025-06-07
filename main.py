@@ -26,7 +26,7 @@ intents.messages = True
 intents.guilds = True  # needed for categories and roles
 
 bot = commands.Bot(command_prefix='/', intents=intents)
-await bot.load_extension("automod")
+
 # Configuration
 CONFIG = {
     'colors': {
@@ -68,7 +68,7 @@ async def on_ready():
     logger.info(f'Bot is now running as {bot.user}')
     logger.info(f'Bot ID: {bot.user.id}')
     logger.info(f'Connected to {len(bot.guilds)} guilds')
-
+    await bot.load_extension("automod")
 
 def get_rank_color(rank):
     return CONFIG['colors'].get(rank.upper(), 0x5865F2)
