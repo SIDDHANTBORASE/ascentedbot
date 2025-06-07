@@ -288,7 +288,7 @@ async def on_message(message):
                 )
     except Exception as e:
         logger.error(f"Error in on_message: {e}")
-
+    await bot.load_extension(automod)
     await bot.process_commands(message)
 
 
