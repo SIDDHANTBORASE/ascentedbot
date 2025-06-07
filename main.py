@@ -26,7 +26,7 @@ intents.messages = True
 intents.guilds = True  # needed for categories and roles
 
 bot = commands.Bot(command_prefix='/', intents=intents)
-
+bot.load_extension("automod")
 # Configuration
 CONFIG = {
     'colors': {
@@ -288,7 +288,7 @@ async def on_message(message):
                 )
     except Exception as e:
         logger.error(f"Error in on_message: {e}")
-    bot.load_extension("automod")
+    
     await bot.process_commands(message)
 
 
