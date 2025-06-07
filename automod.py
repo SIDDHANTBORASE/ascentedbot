@@ -5,7 +5,7 @@ class AutoMod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.BAD_WORDS = ["badword1", "badword2", "stupid", "dumb"]
-        self.LOG_CHANNEL_ID = 123456789012345678  # Replace this!
+        self.LOG_CHANNEL_ID = 1366005332840812633  # Replace this!
 
     @commands.Cog.listener()
     async def on_message(self, message):
