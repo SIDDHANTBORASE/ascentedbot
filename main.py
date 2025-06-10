@@ -354,9 +354,6 @@ async def on_message(message):
             "spastic",
             "autist",
             "lamebrain",
-            "dumb",
-            "stupid",
-            "idiot",
             "moron",
             "imbecile",
 
