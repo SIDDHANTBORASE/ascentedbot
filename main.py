@@ -260,6 +260,8 @@ async def on_message(message):
             "cock",
             "c0ck",
             "cawk",
+            "nega"
+            "fvck"
             "kawk",
             "cunt",
             "cu*t",
