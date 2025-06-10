@@ -448,7 +448,7 @@ async def on_message(message):
                             f"**Message:** ||{message.content}||"),
                         color=discord.Color.red())
                     embed.set_footer(text="Ascented")
-                    await log_channel.send(content = "<@&1366005331809013943>", embed=embed)
+                    await log_channel.send(content = "<@&1379102478666301541>", embed=embed)
             except discord.Forbidden:
                 print("⚠️ Missing permission to delete or send log.")
             except discord.HTTPException as e:
