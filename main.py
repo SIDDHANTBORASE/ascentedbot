@@ -20,12 +20,9 @@ TOKEN = os.getenv("BOT_TOKEN")
 GENERAL_CHANNEL_ID = int(os.getenv("GENERAL_CHANNEL_ID"))
 PING_CHANNEL_ID = int(os.getenv("PING_CHANNEL_ID"))
 
-intents = discord.Intents.default()
-intents.message_content = True
-intents.messages = True
-intents.guilds = True  # needed for categories and roles
+# needed for categories and roles
 
-bot = commands.Bot(command_prefix='/', intents=intents)
+bot = commands.Bot(command_prefix='/', intents=discord.Intents.all())
 
 # Configuration
 CONFIG = {
@@ -47,8 +44,10 @@ CONFIG = {
 
     # ===== TICKET CONFIG =====
     'ticket': {
-        'category_id': 1366005332492550195,  # Replace with your ticket category ID
-        'log_channel_id': 1378594826672541764,  # Replace with your log channel ID (optional)
+        'category_id':
+        1366005332492550195,  # Replace with your ticket category ID
+        'log_channel_id':
+        1378594826672541764,  # Replace with your log channel ID (optional)
         'staff_role_id': 1366005331809013943  # Replace with your staff role ID
     }
 }
@@ -69,6 +68,7 @@ async def on_ready():
     logger.info(f'Bot ID: {bot.user.id}')
     logger.info(f'Connected to {len(bot.guilds)} guilds')
     bot.load_extension("automod")
+
 
 def get_rank_color(rank):
     return CONFIG['colors'].get(rank.upper(), 0x5865F2)
@@ -219,6 +219,244 @@ async def on_message(message):
         if message.author == bot.user:
             return
 
+        # ✅ Bad word filtering section
+        BAD_WORDS = [
+            "fuck",
+            "fuk",
+            "fck",
+            "f***",
+            "f*ck",
+            "f.u.c.k",
+            "fu",
+            "f u",
+            "f.u",
+            "fawk",
+            "fak",
+            "phuck",
+            "phuk",
+            "shit",
+            "sh1t",
+            "sh*t",
+            "s.h.i.t",
+            "sh!t",
+            "shiiit",
+            "bitch",
+            "b!tch",
+            "b1tch",
+            "b*tch",
+            "b i t c h",
+            "biatch",
+            "pussy",
+            "pussi",
+            "p*ssy",
+            "p.u.s.s.y",
+            "pussee",
+            "dick",
+            "d1ck",
+            "d*ck",
+            "dik",
+            "d.i.c.k",
+            "dyck",
+            "cock",
+            "c0ck",
+            "cawk",
+            "kawk",
+            "cunt",
+            "cu*t",
+            "cnt",
+            "c.u.n.t",
+            "slut",
+            "s1ut",
+            "s.l.u.t",
+            "sloot",
+            "whore",
+            "wh0re",
+            "w.h.o.r.e",
+            "hoe",
+            "h0e",
+            "h03",
+            "ass",
+            "a55",
+            "azz",
+            "arse",
+            "asshole",
+            "a**hole",
+            "a**",
+            "arsehole",
+
+            "nigga",
+            "nigger",
+            "niga",
+            "n1gga",
+            "ni99a",
+            "ni**a",
+            "ni**er",
+            "niga",
+            "negro",
+            "negga",
+            "negra",
+            "nigguh",
+            "neega",
+            "neega",
+            "negr",
+            "negr0",
+            "n3gro",
+            "n1gr",
+            "chink",
+            "chingchong",
+            "ching chong",
+            "gook",
+            "zipperhead",
+            "slanty",
+            "slant eye",
+            "chino",
+            "yellowman",
+            "rice eater",
+            "paki",
+            "pak1",
+            "pak1stani",
+            "raghead",
+            "towelhead",
+            "camel jockey",
+            "sandnigger",
+            "gypsy",
+            "gyppo",
+            "gippo",
+
+            "fag",
+            "faggot",
+            "fa**ot",
+            "f@g",
+            "f4g",
+            "fgt",
+            "fagot",
+            "dyke",
+            "d1ke",
+            "d*ke",
+            "d.y.k.e",
+            "tranny",
+            "trannie",
+            "transvestite",
+            "shemale",
+            "he-she",
+            "ladyboy",
+            "crossdresser",
+            "homo",
+            "hom0",
+            "queer",
+
+            "retard",
+            "retarded",
+            "r3tard",
+            "r*tard",
+            "r3t4rd",
+            "spaz",
+            "spastic",
+            "autist",
+            "lamebrain",
+            "dumb",
+            "stupid",
+            "idiot",
+            "moron",
+            "imbecile",
+
+            "bastard",
+            "twat",
+            "jerk",
+            "loser",
+            "scumbag",
+            "dipshit",
+            "douche",
+            "douchebag",
+            "fatass",
+            "fat ass",
+            "fatso",
+            "obese",
+            "fattie",
+            "blubber",
+
+            "kys",
+            "k y s",
+            "kill yourself",
+            "go die",
+            "just die",
+            "end yourself",
+            "unalive yourself",
+            "neck yourself",
+            "commit die",
+
+            "damn",
+            "dammit",
+            "hell",
+            "d@mn",
+            "d@mmit",
+            "bastard",
+            "bloody",
+            "bugger",
+            "bollocks",
+            "wanker",
+            "sod off",
+            "tosser",
+            "lmfao",
+            "lmao",
+            "rekt",
+            "ez",
+            "git gud",
+            "gg ez",
+            "clapped",
+
+            "cracker",
+            "honkey",
+            "hillbilly",
+            "redneck",
+            "yankee",
+            "white trash",
+            "ape",
+            "monkey",
+            "coon",
+            "savage",
+            "caveman",
+            "uncivilized",
+
+            "nlgga",
+            "nibba",
+            "nignog",
+            "nogger",
+            "niggor",
+            "negguh",
+            "kneegrow"
+        ]
+
+        LOG_CHANNEL_ID = 1366005332840812633  # Replace with your log channel ID
+
+        msg_lower = message.content.lower()
+        found_bad = [
+            word for word in BAD_WORDS
+            if re.search(rf"\b{re.escape(word)}\b", msg_lower)
+        ]
+
+        if found_bad:
+            try:
+                
+                await message.delete()
+                log_channel = bot.get_channel(LOG_CHANNEL_ID)
+                if log_channel:
+                    embed = discord.Embed(
+                        title="🚨 Rule Violetion Detected",
+                        description=(
+                            f"**User:** {message.author.mention}\n"
+                            f"**Channel:** {message.channel.mention}\n"
+                            f"**Message:** ||{message.content}||"),
+                        color=discord.Color.red())
+                    embed.set_footer(text="Ascented")
+                    await log_channel.send(content = "<@&1366005331809013943>", embed=embed)
+            except discord.Forbidden:
+                print("⚠️ Missing permission to delete or send log.")
+            except discord.HTTPException as e:
+                print(f"❌ Error deleting or logging: {e}")
+            return  # Prevent further processing of deleted message
+
+        # ✅ Dungeon detection starts here
         if message.channel.id == GENERAL_CHANNEL_ID:
             msg_channel = bot.get_channel(GENERAL_CHANNEL_ID)
             ping_channel = bot.get_channel(PING_CHANNEL_ID)
@@ -257,7 +495,6 @@ async def on_message(message):
                     logger.error("Failed to create embed")
                     return
 
-                # Build ping message based on 4 conditions
                 mention_text = f"<@&{1366005331758682291}>\n"
 
                 rank = dungeon_info['rank'].upper()
@@ -283,12 +520,13 @@ async def on_message(message):
                 await msg_channel.send("Embed sent to Dungeon channel")
                 await ping_channel.send(content=mention_text or None,
                                         embed=embed)
+
                 logger.info(
                     f"Sent dungeon alert for {rank} rank dungeon on {dungeon_info['island']}"
                 )
     except Exception as e:
         logger.error(f"Error in on_message: {e}")
-    
+
     await bot.process_commands(message)
 
 
@@ -346,23 +584,25 @@ async def help_command(ctx):
 @commands.has_permissions(administrator=True)
 async def ticket_p_guild(ctx):
     view = View()
-    view.add_item(Button(label="🎟 Apply for Guild", style=discord.ButtonStyle.green, custom_id="open_ticket_guild"))
+    view.add_item(
+        Button(label="🎟 Apply for Guild",
+               style=discord.ButtonStyle.green,
+               custom_id="open_ticket_guild"))
 
     embed = discord.Embed(
         title="Guild Joining Ticket",
-        description=(
-            "# Open Ticket For Joining the Guild:\n"
-            "Please make sure to carefully read the guidelines in <#1366005332270387280>.\n"
-            "Ensure you meet all the requirements listed before opening a ticket.\n"
-            "To open a ticket, simply click the **button attached** to this message.\n"
-            "Our team will assist you as soon as possible.\n"
-            "Thank you for your interest in joining our community!"
-        ),
-        color=0x2ECC71
-    )
+        description=
+        ("# Open Ticket For Joining the Guild:\n"
+         "Please make sure to carefully read the guidelines in <#1366005332270387280>.\n"
+         "Ensure you meet all the requirements listed before opening a ticket.\n"
+         "To open a ticket, simply click the **button attached** to this message.\n"
+         "Our team will assist you as soon as possible.\n"
+         "Thank you for your interest in joining our community!"),
+        color=0x2ECC71)
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
-        url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
+        url=
+        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
     )
     await ctx.send(embed=embed, view=view)
 
@@ -371,21 +611,23 @@ async def ticket_p_guild(ctx):
 @commands.has_permissions(administrator=True)
 async def ticket_pannel(ctx):
     view = View()
-    view.add_item(Button(label="🎟 Open Ticket", style=discord.ButtonStyle.green, custom_id="open_ticket_support"))
+    view.add_item(
+        Button(label="🎟 Open Ticket",
+               style=discord.ButtonStyle.green,
+               custom_id="open_ticket_support"))
 
     embed = discord.Embed(
         title="Support Section",
-        description=(
-            "If you're facing any issues or need assistance, please click the **button attached** to this message "
-            "to open a support ticket. Our team will get back to you as soon as possible to help resolve your query.\n"
-            "For faster assistance, kindly provide clear details or screenshots if applicable.\n"
-            "Thank you for being a part of our community!"
-        ),
-        color=0x2ECC71
-    )
+        description=
+        ("If you're facing any issues or need assistance, please click the **button attached** to this message "
+         "to open a support ticket. Our team will get back to you as soon as possible to help resolve your query.\n"
+         "For faster assistance, kindly provide clear details or screenshots if applicable.\n"
+         "Thank you for being a part of our community!"),
+        color=0x2ECC71)
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
-        url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
+        url=
+        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
     )
     await ctx.send(embed=embed, view=view)
 
@@ -394,20 +636,23 @@ async def ticket_pannel(ctx):
 @commands.has_permissions(administrator=True)
 async def t_t_pannel(ctx):
     view = View()
-    view.add_item(Button(label="🎟 Appoint Your Therapy Now", style=discord.ButtonStyle.green, custom_id="open_ticket_theoro"))
+    view.add_item(
+        Button(label="🎟 Appoint Your Therapy Now",
+               style=discord.ButtonStyle.green,
+               custom_id="open_ticket_theoro"))
 
     embed = discord.Embed(
         title="Therapy Section",
-        description=(
-            "If you are having any mental health issues or something similar, please click the button attached to "
-            "this message to open a support ticket. <@&1371118384179318795> will help you solve your problem as soon "
-            "as possible. Please don’t leave your ticket empty. Thank you for being a part of our community!"
-        ),
-        color=0x2ECC71
-    )
+        description=
+        ("If you are having any mental health issues or something similar, please click the button attached to "
+         "this message to open a support ticket. <@&1371118384179318795> will help you solve your problem as soon "
+         "as possible. Please don’t leave your ticket empty. Thank you for being a part of our community!"
+         ),
+        color=0x2ECC71)
     embed.set_footer(text="Ascended Sword")
     embed.set_thumbnail(
-        url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
+        url=
+        "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
     )
     await ctx.send(embed=embed, view=view)
 
@@ -417,11 +662,15 @@ async def on_interaction(interaction: discord.Interaction):
     if interaction.type == discord.InteractionType.component:
         custom_id = interaction.data['custom_id']
         guild = interaction.guild
-        category = discord.utils.get(guild.categories, id=CONFIG['ticket']['category_id'])
+        category = discord.utils.get(guild.categories,
+                                     id=CONFIG['ticket']['category_id'])
         staff_role = guild.get_role(CONFIG['ticket']['staff_role_id'])
         log_channel = bot.get_channel(CONFIG['ticket']['log_channel_id'])
 
-        if custom_id in ["open_ticket_guild", "open_ticket_support", "open_ticket_theoro"]:
+        if custom_id in [
+                "open_ticket_guild", "open_ticket_support",
+                "open_ticket_theoro"
+        ]:
             # Check if ticket already exists
             existing = discord.utils.get(
                 guild.text_channels,
@@ -434,17 +683,21 @@ async def on_interaction(interaction: discord.Interaction):
 
             # Channel permissions
             overwrites = {
-                guild.default_role: discord.PermissionOverwrite(read_messages=False),
-                interaction.user: discord.PermissionOverwrite(read_messages=True, send_messages=True),
-                staff_role: discord.PermissionOverwrite(read_messages=True, send_messages=True)
+                guild.default_role:
+                discord.PermissionOverwrite(read_messages=False),
+                interaction.user:
+                discord.PermissionOverwrite(read_messages=True,
+                                            send_messages=True),
+                staff_role:
+                discord.PermissionOverwrite(read_messages=True,
+                                            send_messages=True)
             }
 
             channel = await guild.create_text_channel(
                 name=f"ticket-{interaction.user.name.lower()}",
                 category=category,
                 overwrites=overwrites,
-                reason=f"Ticket opened by {interaction.user.name}"
-            )
+                reason=f"Ticket opened by {interaction.user.name}")
 
             # Embed content based on type
             if custom_id == "open_ticket_guild":
@@ -459,41 +712,54 @@ async def on_interaction(interaction: discord.Interaction):
             elif custom_id == "open_ticket_theoro":
                 description = f"{interaction.user.mention}, our Therapist will reach out to you shortly."
 
-            embed = discord.Embed(title="🎫 Ticket Opened", description=description, color=0x3498DB)
+            embed = discord.Embed(title="🎫 Ticket Opened",
+                                  description=description,
+                                  color=0x3498DB)
             embed.set_footer(text="Ascended Sword")
             embed.set_thumbnail(
-                url="https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
+                url=
+                "https://media.discordapp.net/attachments/1378594850383069235/1379694254393266227/image.png"
             )
 
             close_view = View()
-            close_view.add_item(Button(label="🔒 Close Ticket", style=discord.ButtonStyle.red, custom_id="close_ticket"))
+            close_view.add_item(
+                Button(label="🔒 Close Ticket",
+                       style=discord.ButtonStyle.red,
+                       custom_id="close_ticket"))
 
-            await channel.send(content=f"{interaction.user.mention} " , embed=embed)
+            await channel.send(content=f"{interaction.user.mention} ",
+                               embed=embed)
             if custom_id == "open_ticket_theoro":
-               await channel.send(content=f"<@&1371118384179318795>",view = close_view)
+                await channel.send(content=f"<@&1371118384179318795>",
+                                   view=close_view)
             elif custom_id == "open_ticket_guild":
-                await channel.send(content =f"<@&1379102430746378240> <@&1379102625714147438>",view = close_view)
+                await channel.send(
+                    content=f"<@&1379102430746378240> <@&1379102625714147438>",
+                    view=close_view)
             else:
-                await channel.send(content =f"<@&1379102430746378240> ",view = close_view)
-            await interaction.response.send_message(f"✅ Ticket created: {channel.mention}", ephemeral=True)
+                await channel.send(content=f"<@&1379102430746378240> ",
+                                   view=close_view)
+            await interaction.response.send_message(
+                f"✅ Ticket created: {channel.mention}", ephemeral=True)
 
             if log_channel:
-                await log_channel.send(f"📩 Ticket opened by {interaction.user.mention} → {channel.mention}")
+                await log_channel.send(
+                    f"📩 Ticket opened by {interaction.user.mention} → {channel.mention}"
+                )
 
         elif custom_id == "close_ticket":
-            await interaction.response.send_message("🛑 Ticket will be closed in 5 seconds...", ephemeral=True)
+            await interaction.response.send_message(
+                "🛑 Ticket will be closed in 5 seconds...", ephemeral=True)
             await asyncio.sleep(5)
             if log_channel:
-                await log_channel.send(f"🔒 Ticket closed: {interaction.channel.name} by {interaction.user.mention}")
+                await log_channel.send(
+                    f"🔒 Ticket closed: {interaction.channel.name} by {interaction.user.mention}"
+                )
             await interaction.channel.delete()
 
 
-
 @bot.command(name='pdg')
-async def p_d_g(ctx,
-                       island: str,
-                       world: str,
-                       message_time: datetime = None):
+async def p_d_g(ctx, island: str, world: str, message_time: datetime = None):
     island = island.title()
     world = world.title()
     ping_channel = bot.get_channel(PING_CHANNEL_ID)
