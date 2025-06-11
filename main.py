@@ -220,7 +220,8 @@ async def on_message(message):
             return
 
         # ✅ Bad word filtering section
-        BAD_WORDS = [
+   BAD_WORD =  [ ""]
+          #  BAD_WORDS = [
             "fuck",
             "fuk",
             "fck",
